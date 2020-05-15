@@ -1,15 +1,34 @@
-var path = require('path')
-var webpack = require('webpack')
+const webpack = require('webpack')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const fs = require('fs');
+const path = require('path');
+const rootDir = path.resolve(__dirname, '../');
+const componentDir = 'src/components';
+const cModuleNames = fs.readdirSync(path.resolve(componentDir));
+const cModuleMap = cModuleNames.reduce((prev, name) => {
+  prev[name] = `./${componentDir}/${name}/index.tsx`;
+  return prev;
+}, {});
+console.log("==============", cModuleMap);
+
 module.exports = {
-  entry:'./src/index.ts', //入口文件路径
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    library: 'laiye-antd-react', 
-    libraryTarget: 'umd',
-    libraryExport: 'default'
+   // 入口处设置为多入口，即每一个组件都作为一个入口，这样输出的可以是拆分后的组件
+   entry: {
+    index: './src/index.tsx',
+    ...cModuleMap // 组件的名称及位置
   },
-  devtool: 'inline-source-map',
+  output: {
+    path: path.resolve(__dirname, 'es'), // 要输出多文件这里就要配置输出目录而不是当个文件
+    filename: '[name]/index.js',
+    // output.library 和 output.libraryTarget 一起使用 对外暴露 library 及定义输出组件库格式
+    library: ['laiye-antd-react', '[name]'], 
+    libraryTarget: 'umd',
+    publicPath: '/'
+  },
+  // devtool: 'inline-source-map',
+  resolve: {
+    extensions: ['.js', 'json', '.ts', '.tsx'],
+  },
   module: {
     rules: [
       {
@@ -56,5 +75,6 @@ module.exports = {
   },
   plugins: [
       new webpack.HotModuleReplacementPlugin(),
+      new UglifyJsPlugin()
      ],
   }

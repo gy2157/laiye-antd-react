@@ -1,3 +1,3 @@
-import { Badge } from 'antd';
+import { Button } from 'antd';
 
-export default Badge;
+export default Button;

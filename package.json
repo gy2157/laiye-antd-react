@@ -4,8 +4,11 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "eslint --ext .tsx,.ts --fix ./src"
+    "eslint": "eslint --ext .tsx,.ts --fix ./src",
+    "build": "webpack --config webpack.config.js -p"
   },
+  "main": "es/index/index.js",
+  "module": "es/index/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gy2157/laiye-antd-react.git"
@@ -52,7 +55,9 @@
     "prettier": "^2.0.5",
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.2.1",
+    "ts-loader": "^7.0.4",
     "typescript": "^3.9.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0"
