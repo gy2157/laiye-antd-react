@@ -1,24 +1,31 @@
 import '@babel/polyfill';
-import 'core-js/es6/map';
-import 'core-js/es6/set';
+import 'core-js/es/map';
+import 'core-js/es/set';
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Button, Checkbox, Input } from 'uibot-ui-antd';
-import 'uibot-ui-antd/es/button/style/css';
-import 'uibot-ui-antd/es/checkbox/style/css';
+import { Provider } from 'mobx-react';
+import appStore from './stores/appStore';
+import Portal from './components/layouts/Portal';
+
+import { ConfigProvider } from '@laiye/uibot-ui-antd';
 const render = async () => {
+    console.time('render time');
+    // await appStore.beforeRender(browserHistory);
+    // @ts-ignore
     ReactDOM.render(
-        <div>
-            测试测试
-            <Button type="primary">Primary</Button>
-            {/* <Checkbox onChange={()=> {}}>Checkbox</Checkbox> */}
-            {/* <Input placeholder="Basic usage" /> */}
-        </div>,
+        <Provider appStore={appStore} i18nStore={appStore.i18nStore} userStore={appStore.userStore}>
+            <ConfigProvider locale={appStore['i18nStore'].antLocaleData}>
+                <Portal />
+            </ConfigProvider>
+        </Provider>,
         document.getElementById('react-app')
     );
     // tslint:disable-next-line: triple-equals
+    // if (appStore.i18nStore.language == 'zh') {
+    //     appStore.afterRender();
+    // }
+    console.timeEnd('render time');
 };
-
 render();

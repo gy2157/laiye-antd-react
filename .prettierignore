@@ -1,15 +1,11 @@
 **/*.svg
-package.json
 package-lock.json
 lib/
 dist/
 LICENSE
-components/*/*.js
-components/*/*.jsx
 .gitignore
 .prettierignore
 .DS_Store
 .eslintignore
 **/*.yml
 yarn.lock
-tsconfig.json
